@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: "Homework #18 (test env for library-client)"
+
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        registerHealthIndicator: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

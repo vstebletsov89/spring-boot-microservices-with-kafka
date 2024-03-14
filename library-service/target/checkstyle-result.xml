@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<checkstyle version="10.11.0">
+<file name="C:\Users\stebl\IdeaProjects\spring-boot-microservices-with-kafka\library-service\src\main\java\ru\otus\hw\actuator\LibraryHealthIndicator.java">
+</file>
+<file name="C:\Users\stebl\IdeaProjects\spring-boot-microservices-with-kafka\library-service\src\main\java\ru\otus\hw\controllers\AuthorController.java">
+</file>
+<file name="C:\Users\stebl\IdeaProjects\spring-boot-microservices-with-kafka\library-service\src\main\java\ru\otus\hw\controllers\BookController.java">
+</file>
+<file name="C:\Users\stebl\IdeaProjects\spring-boot-microservices-with-kafka\library-service\src\main\java\ru\otus\hw\controllers\CommentController.java">
+</file>
+<file name="C:\Users\stebl\IdeaProjects\spring-boot-microservices-with-kafka\library-service\src\main\java\ru\otus\hw\controllers\GenreController.java">
+</file>
+<file name="C:\Users\stebl\IdeaProjects\spring-boot-microservices-with-kafka\library-service\src\main\java\ru\otus\hw\controllers\RestExceptionHandler.java">
+</file>
+<file name="C:\Users\stebl\IdeaProjects\spring-boot-microservices-with-kafka\library-service\src\main\java\ru\otus\hw\exceptions\InvalidStateException.java">
+</file>
+<file name="C:\Users\stebl\IdeaProjects\spring-boot-microservices-with-kafka\library-service\src\main\java\ru\otus\hw\exceptions\NotFoundException.java">
+</file>
+<file name="C:\Users\stebl\IdeaProjects\spring-boot-microservices-with-kafka\library-service\src\main\java\ru\otus\hw\LibraryServiceApplication.java">
+</file>
+<file name="C:\Users\stebl\IdeaProjects\spring-boot-microservices-with-kafka\library-service\src\main\java\ru\otus\hw\mappers\AuthorMapper.java">
+</file>
+<file name="C:\Users\stebl\IdeaProjects\spring-boot-microservices-with-kafka\library-service\src\main\java\ru\otus\hw\mappers\BookMapper.java">
+</file>
+<file name="C:\Users\stebl\IdeaProjects\spring-boot-microservices-with-kafka\library-service\src\main\java\ru\otus\hw\mappers\CommentMapper.java">
+</file>
+<file name="C:\Users\stebl\IdeaProjects\spring-boot-microservices-with-kafka\library-service\src\main\java\ru\otus\hw\mappers\GenreMapper.java">
+</file>
+<file name="C:\Users\stebl\IdeaProjects\spring-boot-microservices-with-kafka\library-service\src\main\java\ru\otus\hw\models\Author.java">
+</file>
+<file name="C:\Users\stebl\IdeaProjects\spring-boot-microservices-with-kafka\library-service\src\main\java\ru\otus\hw\models\Book.java">
+</file>
+<file name="C:\Users\stebl\IdeaProjects\spring-boot-microservices-with-kafka\library-service\src\main\java\ru\otus\hw\models\Comment.java">
+</file>
+<file name="C:\Users\stebl\IdeaProjects\spring-boot-microservices-with-kafka\library-service\src\main\java\ru\otus\hw\models\Genre.java">
+</file>
+<file name="C:\Users\stebl\IdeaProjects\spring-boot-microservices-with-kafka\library-service\src\main\java\ru\otus\hw\models\ResponseServerMessage.java">
+</file>
+<file name="C:\Users\stebl\IdeaProjects\spring-boot-microservices-with-kafka\library-service\src\main\java\ru\otus\hw\models\User.java">
+</file>
+<file name="C:\Users\stebl\IdeaProjects\spring-boot-microservices-with-kafka\library-service\src\main\java\ru\otus\hw\repositories\AuthorRepository.java">
+</file>
+<file name="C:\Users\stebl\IdeaProjects\spring-boot-microservices-with-kafka\library-service\src\main\java\ru\otus\hw\repositories\BookRepository.java">
+</file>
+<file name="C:\Users\stebl\IdeaProjects\spring-boot-microservices-with-kafka\library-service\src\main\java\ru\otus\hw\repositories\CommentRepository.java">
+</file>
+<file name="C:\Users\stebl\IdeaProjects\spring-boot-microservices-with-kafka\library-service\src\main\java\ru\otus\hw\repositories\GenreRepository.java">
+</file>
+<file name="C:\Users\stebl\IdeaProjects\spring-boot-microservices-with-kafka\library-service\src\main\java\ru\otus\hw\repositories\UserRepository.java">
+</file>
+<file name="C:\Users\stebl\IdeaProjects\spring-boot-microservices-with-kafka\library-service\src\main\java\ru\otus\hw\services\AuthorService.java">
+</file>
+<file name="C:\Users\stebl\IdeaProjects\spring-boot-microservices-with-kafka\library-service\src\main\java\ru\otus\hw\services\AuthorServiceImpl.java">
+</file>
+<file name="C:\Users\stebl\IdeaProjects\spring-boot-microservices-with-kafka\library-service\src\main\java\ru\otus\hw\services\BookService.java">
+</file>
+<file name="C:\Users\stebl\IdeaProjects\spring-boot-microservices-with-kafka\library-service\src\main\java\ru\otus\hw\services\BookServiceImpl.java">
+</file>
+<file name="C:\Users\stebl\IdeaProjects\spring-boot-microservices-with-kafka\library-service\src\main\java\ru\otus\hw\services\CommentService.java">
+</file>
+<file name="C:\Users\stebl\IdeaProjects\spring-boot-microservices-with-kafka\library-service\src\main\java\ru\otus\hw\services\CommentServiceImpl.java">
+</file>
+<file name="C:\Users\stebl\IdeaProjects\spring-boot-microservices-with-kafka\library-service\src\main\java\ru\otus\hw\services\GenreService.java">
+</file>
+<file name="C:\Users\stebl\IdeaProjects\spring-boot-microservices-with-kafka\library-service\src\main\java\ru\otus\hw\services\GenreServiceImpl.java">
+</file>
+<file name="C:\Users\stebl\IdeaProjects\spring-boot-microservices-with-kafka\library-service\src\test\java\ru\otus\hw\actuator\LibraryHealthIndicatorTest.java">
+</file>
+<file name="C:\Users\stebl\IdeaProjects\spring-boot-microservices-with-kafka\library-service\src\test\java\ru\otus\hw\controllers\ActuatorTest.java">
+</file>
+<file name="C:\Users\stebl\IdeaProjects\spring-boot-microservices-with-kafka\library-service\src\test\java\ru\otus\hw\controllers\AuthorControllerTest.java">
+</file>
+<file name="C:\Users\stebl\IdeaProjects\spring-boot-microservices-with-kafka\library-service\src\test\java\ru\otus\hw\controllers\BookControllerTest.java">
+</file>
+<file name="C:\Users\stebl\IdeaProjects\spring-boot-microservices-with-kafka\library-service\src\test\java\ru\otus\hw\controllers\CommentControllerTest.java">
+</file>
+<file name="C:\Users\stebl\IdeaProjects\spring-boot-microservices-with-kafka\library-service\src\test\java\ru\otus\hw\controllers\GenreControllerTest.java">
+</file>
+<file name="C:\Users\stebl\IdeaProjects\spring-boot-microservices-with-kafka\library-service\src\test\java\ru\otus\hw\controllers\RestExceptionHandlerTest.java">
+</file>
+<file name="C:\Users\stebl\IdeaProjects\spring-boot-microservices-with-kafka\library-service\src\test\java\ru\otus\hw\repositories\BookRepositoryTest.java">
+</file>
+<file name="C:\Users\stebl\IdeaProjects\spring-boot-microservices-with-kafka\library-service\src\test\java\ru\otus\hw\repositories\CommentRepositoryTest.java">
+</file>
+<file name="C:\Users\stebl\IdeaProjects\spring-boot-microservices-with-kafka\library-service\src\test\java\ru\otus\hw\services\AuthorServiceImplTest.java">
+</file>
+<file name="C:\Users\stebl\IdeaProjects\spring-boot-microservices-with-kafka\library-service\src\test\java\ru\otus\hw\services\BookServiceImplTest.java">
+</file>
+<file name="C:\Users\stebl\IdeaProjects\spring-boot-microservices-with-kafka\library-service\src\test\java\ru\otus\hw\services\CommentServiceImplTest.java">
+</file>
+<file name="C:\Users\stebl\IdeaProjects\spring-boot-microservices-with-kafka\library-service\src\test\java\ru\otus\hw\services\GenreServiceImplTest.java">
+</file>
+</checkstyle>

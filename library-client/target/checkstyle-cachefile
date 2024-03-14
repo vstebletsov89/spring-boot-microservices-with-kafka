@@ -1,0 +1,13 @@
+#Thu Mar 14 18:01:27 CET 2024
+configuration*?=55594905BE242E36F45732A864F7F609920CD60D
+C\:\\Users\\stebl\\IdeaProjects\\spring-boot-microservices-with-kafka\\library-client\\src\\main\\java\\ru\\otus\\hw\\LibraryClientApplication.java=1709462130108
+C\:\\Users\\stebl\\IdeaProjects\\spring-boot-microservices-with-kafka\\library-client\\src\\main\\java\\ru\\otus\\hw\\services\\BookServiceImpl.java=1709462130147
+C\:\\Users\\stebl\\IdeaProjects\\spring-boot-microservices-with-kafka\\library-client\\src\\main\\java\\ru\\otus\\hw\\services\\BookService.java=1709462130147
+C\:\\Users\\stebl\\IdeaProjects\\spring-boot-microservices-with-kafka\\library-client\\src\\main\\java\\ru\\otus\\hw\\models\\ResponseServerMessage.java=1709471175366
+C\:\\Users\\stebl\\IdeaProjects\\spring-boot-microservices-with-kafka\\library-client\\src\\main\\java\\ru\\otus\\hw\\controllers\\BookController.java=1709462130108
+C\:\\Users\\stebl\\IdeaProjects\\spring-boot-microservices-with-kafka\\library-client\\src\\test\\java\\ru\\otus\\hw\\controllers\\ActuatorTest.java=1709468547608
+C\:\\Users\\stebl\\IdeaProjects\\spring-boot-microservices-with-kafka\\library-client\\src\\main\\java\\ru\\otus\\hw\\controllers\\RestExceptionHandler.java=1709467163662
+C\:\\Users\\stebl\\IdeaProjects\\spring-boot-microservices-with-kafka\\library-client\\src\\main\\java\\ru\\otus\\hw\\feign\\LibraryServiceProxy.java=1709468547597
+C\:\\Users\\stebl\\IdeaProjects\\spring-boot-microservices-with-kafka\\library-client\\src\\test\\java\\ru\\otus\\hw\\controllers\\RestExceptionHandlerTest.java=1709467556770
+C\:\\Users\\stebl\\IdeaProjects\\spring-boot-microservices-with-kafka\\library-client\\src\\main\\java\\ru\\otus\\hw\\exceptions\\NotFoundException.java=1709462130142
+C\:\\Users\\stebl\\IdeaProjects\\spring-boot-microservices-with-kafka\\library-client\\src\\main\\java\\ru\\otus\\hw\\exceptions\\InvalidStateException.java=1709462130142
