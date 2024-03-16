@@ -1,7 +1,7 @@
 package ru.otus.hw.models;
 
 public enum OrderState {
-    PENDING,
+    CREATED,
     PUBLISHED,
     COMPLETED,
     SHIPPED,

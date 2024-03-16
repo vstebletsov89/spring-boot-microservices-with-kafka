@@ -11,6 +11,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.NamedAttributeNode;
+import jakarta.persistence.NamedEntityGraph;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -27,15 +29,20 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "orders")
+@NamedEntityGraph(
+        name = "order-entity-graph",
+        attributeNodes = {
+                @NamedAttributeNode("items")
+        }
+)
 public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @Column(name = "customer_number", nullable = false)
+    private String customerNumber;
 
     @Enumerated(EnumType.STRING)
     private OrderState state;
@@ -44,5 +51,5 @@ public class Order {
     private LocalDateTime createdAt;
 
     @OneToMany(cascade = CascadeType.ALL)
-    private List<Product> products;
+    private List<Item> items;
 }

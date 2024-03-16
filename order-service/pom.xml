@@ -106,7 +106,7 @@
 
         <dependency>
             <groupId>ru.otus.hw</groupId>
-            <artifactId>library-dto</artifactId>
+            <artifactId>order-dto</artifactId>
             <version>1.0</version>
         </dependency>
 

@@ -20,8 +20,8 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "products")
-public class Product {
+@Table(name = "items")
+public class Item {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,14 +30,14 @@ public class Product {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "description")
-    private String description;
+    @Column(name = "category")
+    private String category;
 
     @Column(name = "quantity", nullable = false)
-    @Min(value = 0, message = "Quantity has to be non negative number")
+    @Min(value = 0, message = "Quantity must be non negative number")
     private Integer quantity;
 
     @Column(name = "price", nullable = false)
-    @DecimalMin(value = "0.00", message = "Price has to be non negative number")
+    @DecimalMin(value = "0.00", message = "Price must be non negative number")
     private BigDecimal price;
 }

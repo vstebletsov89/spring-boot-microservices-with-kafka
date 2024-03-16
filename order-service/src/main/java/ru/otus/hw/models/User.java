@@ -21,6 +21,8 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "users")
 public class User {
+    //TODO: move it to auth service
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
