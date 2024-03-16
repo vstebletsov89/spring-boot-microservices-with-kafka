@@ -55,30 +55,30 @@ class OrderControllerTest {
 
     @DisplayName("должен загружать заказ")
     @Test
-    void shouldReturnOrderByCustomerNumber() throws Exception {
+    void shouldReturnOrderByOrderNumber() throws Exception {
         var expectedOrder = new OrderDto(
                 "1a80ccd8-7777-4001-ba61-1942ec218377",
                 OrderState.PUBLISHED.toString(),
                 expectedItems);
         doReturn(expectedOrder)
                 .when(orderService)
-                .findOrderByCustomerNumber(expectedOrder.getCustomerNumber());
+                .findOrderByOrderNumber(expectedOrder.getOrderNumber());
 
-        mockMvc.perform(get("/api/v1/orders/{customerNumber}",
-                        expectedOrder.getCustomerNumber()))
+        mockMvc.perform(get("/api/v1/orders/{orderNumber}",
+                        expectedOrder.getOrderNumber()))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().json(objectMapper.writeValueAsString(expectedOrder)));
 
         verify(orderService, times(1))
-                .findOrderByCustomerNumber(expectedOrder.getCustomerNumber());
+                .findOrderByOrderNumber(expectedOrder.getOrderNumber());
     }
 
     @DisplayName("должен добавить заказ")
     @Test
     void shouldAddOrder() throws Exception {
-        var orderCreateDto = new OrderCreateDto(expectedItems);
+        var orderCreateDto = new OrderCreateDto(1L, expectedItems);
         var expectedOrder = new OrderDto(
                 "1a80ccd8-7777-4001-ba61-1942ec218377",
                 OrderState.CREATED.toString(),
@@ -98,12 +98,12 @@ class OrderControllerTest {
 
     @DisplayName("должен отменить заказ")
     @Test
-    void shouldCancelOrderByCustomerNumber() throws Exception {
+    void shouldCancelOrderByOrderNumber() throws Exception {
         doNothing()
                 .when(orderService)
-                .cancelByCustomerNumber(anyString());
+                .cancelByOrderNumber(anyString());
 
-        mockMvc.perform(patch("/api/v1/orders/{customerNumber}",
+        mockMvc.perform(patch("/api/v1/orders/{orderNumber}",
                         "12345"))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -111,7 +111,7 @@ class OrderControllerTest {
                 .andExpect(content().string("Order was cancelled"));
 
         verify(orderService, times(1))
-                .cancelByCustomerNumber(anyString());
+                .cancelByOrderNumber(anyString());
     }
 
 }

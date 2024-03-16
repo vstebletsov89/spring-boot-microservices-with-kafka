@@ -17,10 +17,9 @@ public interface OrderMapper {
 
      @Mappings({
              @Mapping(target = "items", source = "order.items"),
+             @Mapping(target = "orderState", source = "order.state"),
+             @Mapping(target = "orderNumber", source = "order.orderNumber")
      })
      OrderDto toDto(Order order);
-
-     @Mapping(target = "id", expression = "java(null)")
-     Order toModel(OrderCreateDto orderCreateDto);
 
 }

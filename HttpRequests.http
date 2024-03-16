@@ -1,0 +1,8 @@
+### Create order
+POST http://localhost:8081/api/v1/orders
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "items": [{"id": 1}, {"id": 2}, {"id": 3}]
+}

@@ -4,9 +4,9 @@ import ru.otus.hw.dto.OrderCreateDto;
 import ru.otus.hw.dto.OrderDto;
 
 public interface OrderService {
-    OrderDto findOrderByCustomerNumber(String customerNumber);
+    OrderDto findOrderByOrderNumber(String orderNumber);
 
     OrderDto create(OrderCreateDto orderCreateDto);
 
-    void cancelByCustomerNumber(String customerNumber);
+    void cancelByOrderNumber(String orderNumber);
 }

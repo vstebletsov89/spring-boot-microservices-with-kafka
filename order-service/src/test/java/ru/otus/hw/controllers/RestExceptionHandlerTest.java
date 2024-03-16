@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import ru.otus.hw.kafka.ProducerService;
 import ru.otus.hw.mappers.ItemMapperImpl;
 import ru.otus.hw.mappers.OrderMapperImpl;
 import ru.otus.hw.models.ResponseServerMessage;
@@ -52,6 +53,9 @@ class RestExceptionHandlerTest {
     private OrderService orderService;
 
     @MockBean
+    private ProducerService producerService;
+
+    @MockBean
     private OrderRepository orderRepository;
 
     @Autowired
@@ -65,27 +69,27 @@ class RestExceptionHandlerTest {
     void shouldHandleNotFoundExceptionForOrder() throws Exception {
         doReturn(Optional.empty())
                 .when(orderRepository)
-                .findOrderByCustomerNumber(anyString());
+                .findOrderByOrderNumber(anyString());
         var expectedResponse = ResponseServerMessage.builder()
                 .errorMessage("Order with number '12345' not found")
                 .stackTrace(null);
 
-        mockMvc.perform(get("/api/v1/orders/{customerNumber}", "12345"))
+        mockMvc.perform(get("/api/v1/orders/{orderNumber}", "12345"))
                 .andDo(print())
                 .andExpect(status().isNotFound())
                 .andExpect(content().contentType(MediaType.valueOf("application/json")))
                 .andExpect(content().json(objectMapper.writeValueAsString(expectedResponse)));
 
-        verify(orderRepository, times(1)).findOrderByCustomerNumber(anyString());
+        verify(orderRepository, times(1)).findOrderByOrderNumber(anyString());
     }
 
 
     @DisplayName("должен обрабатывать исключениe внутренней ошибки сервера")
     @Test
     void shouldHandleAnyRuntimeException() throws Exception {
-        when(orderRepository.findOrderByCustomerNumber(anyString())).thenThrow(new RuntimeException());
+        when(orderRepository.findOrderByOrderNumber(anyString())).thenThrow(new RuntimeException());
 
-        mockMvc.perform(get("/api/v1/orders/{customerNumber}", "12345"))
+        mockMvc.perform(get("/api/v1/orders/{orderNumber}", "12345"))
                 .andDo(print())
                 .andExpect(status().isInternalServerError())
                 .andExpect(content().contentType(MediaType.valueOf("application/json")))

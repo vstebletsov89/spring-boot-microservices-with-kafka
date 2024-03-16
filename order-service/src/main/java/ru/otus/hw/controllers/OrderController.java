@@ -4,7 +4,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,9 +22,9 @@ import ru.otus.hw.services.OrderService;
 public class OrderController {
     private final OrderService orderService;
 
-    @GetMapping("/api/v1/orders/{customerNumber}")
-    public OrderDto getOrderByCustomerNumber(@PathVariable("customerNumber") String number) {
-        return orderService.findOrderByCustomerNumber(number);
+    @GetMapping("/api/v1/orders/{orderNumber}")
+    public OrderDto getOrderByOrderNumber(@PathVariable("orderNumber") String number) {
+        return orderService.findOrderByOrderNumber(number);
     }
 
     @PostMapping("/api/v1/orders")
@@ -35,9 +34,9 @@ public class OrderController {
         return orderService.create(orderCreateDto);
     }
 
-    @PatchMapping("/api/v1/orders/{customerNumber}")
-    public String cancelOrder (@PathVariable("customerNumber") String customerNumber) {
-        orderService.cancelByCustomerNumber(customerNumber);
+    @PatchMapping("/api/v1/orders/{orderNumber}")
+    public String cancelOrder (@PathVariable("orderNumber") String orderNumber) {
+        orderService.cancelByOrderNumber(orderNumber);
         return "Order was cancelled";
     }
 }

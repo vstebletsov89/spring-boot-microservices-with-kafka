@@ -9,6 +9,6 @@ import java.util.Optional;
 public interface OrderRepository extends JpaRepository<Order, Long> {
 
     @EntityGraph(value = "order-entity-graph")
-    Optional<Order> findOrderByCustomerNumber(String customerNumber);
+    Optional<Order> findOrderByOrderNumber(String orderNumber);
 
 }

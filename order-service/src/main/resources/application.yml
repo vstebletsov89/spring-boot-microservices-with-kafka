@@ -1,6 +1,10 @@
 server:
   port: 8081
 
+application:
+  kafka:
+    topic: "orders"
+
 spring:
   application:
     name: order-service
@@ -13,6 +17,8 @@ spring:
     hibernate:
       ddl-auto: none
     show-sql: true
+  kafka:
+    bootstrap-servers: "localhost:9092"
 
 eureka:
   client:
@@ -35,5 +41,7 @@ management:
 logging:
   file:
     name: ./logs/library.log
+  level:
+    org.flywaydb: debug
 
 
