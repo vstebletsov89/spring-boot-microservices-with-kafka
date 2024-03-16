@@ -1,34 +1,20 @@
-//package ru.otus.hw.services;
-//
-//import org.junit.jupiter.api.BeforeAll;
-//import org.junit.jupiter.api.DisplayName;
-//import org.junit.jupiter.api.Test;
-//import org.junit.jupiter.api.TestInstance;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.boot.test.context.SpringBootTest;
-//import org.springframework.boot.test.mock.mockito.MockBean;
-//import ru.otus.hw.dto.BookCreateDto;
-//import ru.otus.hw.exceptions.NotFoundException;
-//import ru.otus.hw.mappers.AuthorMapperImpl;
-//import ru.otus.hw.mappers.BookMapperImpl;
-//import ru.otus.hw.mappers.GenreMapperImpl;
-//import ru.otus.hw.repositories.OrderRepository;
-//
-//import java.util.ArrayList;
-//import java.util.List;
-//import java.util.Optional;
-//
-//import static org.assertj.core.api.Assertions.assertThat;
-//import static org.junit.jupiter.api.Assertions.assertEquals;
-//import static org.junit.jupiter.api.Assertions.assertThrows;
-//import static org.mockito.ArgumentMatchers.any;
-//import static org.mockito.Mockito.doReturn;
-//
-//@DisplayName("Проверка работы сервиса книг")
-//@SpringBootTest(classes = {BookServiceImpl.class, BookMapperImpl.class, AuthorMapperImpl.class, GenreMapperImpl.class})
-//@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-//class BookServiceImplTest {
-//
+package ru.otus.hw.services;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.TestInstance;
+import org.springframework.boot.test.context.SpringBootTest;
+import ru.otus.hw.mappers.ItemMapperImpl;
+import ru.otus.hw.mappers.OrderMapperImpl;
+
+@DisplayName("Проверка работы сервиса заказов")
+@SpringBootTest(classes = {OrderServiceImpl.class,
+        OrderMapperImpl.class,
+        ItemMapperImpl.class})
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+class OrderServiceImplTest {
+
+    //TODO: implement service tests with kafka
+
 //    private static List<Book> expectedBooks = new ArrayList<>();
 //
 //    private static List<BookDto> expectedBooksDto = new ArrayList<>();
@@ -147,4 +133,4 @@
 //                .usingRecursiveComparison()
 //                .isEqualTo(newBook);
 //    }
-//}
+}
