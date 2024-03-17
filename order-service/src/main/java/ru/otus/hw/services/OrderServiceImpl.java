@@ -19,6 +19,7 @@ import ru.otus.hw.repositories.OrderRepository;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Slf4j
@@ -37,6 +38,7 @@ public class OrderServiceImpl implements OrderService {
     @Transactional(readOnly = true)
     @Override
     public OrderDto findOrderByOrderNumber(String orderNumber) {
+        log.info("find order {}", orderNumber);
         return orderMapper.toDto(
                 orderRepository.findOrderByOrderNumber(orderNumber)
                         .orElseThrow(() ->
@@ -83,13 +85,23 @@ public class OrderServiceImpl implements OrderService {
         return orderMapper.toDto(orderRepository.save(newOrder));
     }
 
+    @Override
+    public List<Order> getUnpaidOrders() {
+        return orderRepository.findOrderByState(OrderState.PUBLISHED);
+    }
+
     @Transactional
     @Override
     public void cancelByOrderNumber(String orderNumber) {
+        log.info("cancel order {}", orderNumber);
         var order =  orderRepository.findOrderByOrderNumber(orderNumber)
                 .orElseThrow(() ->
                         new NotFoundException("Order with number '%s' not found".formatted(orderNumber)));
         order.setState(OrderState.CANCELED);
+
+        // remove reserve item in stock
+        order.getItems()
+                .forEach(i -> i.setQuantity(i.getQuantity() + 1));
         orderRepository.save(order);
     }
 

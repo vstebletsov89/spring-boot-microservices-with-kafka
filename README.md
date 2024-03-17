@@ -3,29 +3,21 @@ TODO:
 
 +users - reuse
 
-!order-service  <--- implement base without kafka
-order[List of Products(id, quantity)]->order->service
--> save to repo (order in progress) - > send to kafka -> 
-update order (processing)
-(listen payments topic and update and notify user
-that payment was succsfull - wait for delivery)
+!!!order-service  <--- 
+ implement sheduler (example) to cancel unpaid orders each 20 minutes
 
-!spring gateway
-!auth service jwt
-!add kafka to order-service
+ update each item to add 1 to quantity (remove reserve)
 
-!payment-service <-- implement base
-payment service -> get from kafka order - > 
-save to another db (postgres/mongo) ->
+!!!payment-service <-- implement base
+payment service -> get from kafka order - >
+save data to payments table ->
 send to kafka to another topic payments
 
-!add kafka to payment-service
+!!!spring gateway
+!!!auth service jwt
 
 !generator orders
-!add UI for kafka/DB orders
 
 !description
 !diagram
 !presentation
-
-!bonus: zipkin, docker
