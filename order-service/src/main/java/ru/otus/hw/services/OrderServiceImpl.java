@@ -76,6 +76,7 @@ public class OrderServiceImpl implements OrderService {
 
         var orderEvent = new OrderEvent(
                 newOrder.getUserId(),
+                newOrder.getState().toString(),
                 newOrder.getOrderNumber(),
                 amount);
 
@@ -94,15 +95,23 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void cancelByOrderNumber(String orderNumber) {
         log.info("cancel order {}", orderNumber);
-        var order =  orderRepository.findOrderByOrderNumber(orderNumber)
+        var cancelledOrder =  orderRepository.findOrderByOrderNumber(orderNumber)
                 .orElseThrow(() ->
                         new NotFoundException("Order with number '%s' not found".formatted(orderNumber)));
-        order.setState(OrderState.CANCELED);
+        cancelledOrder.setState(OrderState.CANCELED);
 
         // remove reserve item in stock
-        order.getItems()
+        cancelledOrder.getItems()
                 .forEach(i -> i.setQuantity(i.getQuantity() + 1));
-        orderRepository.save(order);
+        orderRepository.save(cancelledOrder);
+
+        var orderEvent = new OrderEvent(
+                cancelledOrder.getUserId(),
+                cancelledOrder.getState().toString(),
+                cancelledOrder.getOrderNumber(),
+                BigDecimal.ZERO);
+
+        producerService.sendOrderEvent(orderEvent);
     }
 
 }
