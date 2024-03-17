@@ -19,14 +19,12 @@ public class ProducerService {
     //TODO: implement to send processed order
     private final KafkaTemplate<String , OrderEventDto> kafkaTemplate;
 
-    public void sendOrderEvent(final OrderEventDto orderEventDto) {
-
-        log.info("Send event to orders topic: {}", orderEventDto);
+    public void sendProcessedOrderEvent(OrderEventDto orderEventDto) {
+        log.info("Send event to orders_processes topic: {}", orderEventDto);
         final ProducerRecord<String, OrderEventDto> record =
                 new ProducerRecord<>(topic,
                         String.valueOf(orderEventDto.getUserId()),
                         orderEventDto);
-
         var future = kafkaTemplate.send(record);
 
         future.whenComplete((result, ex) -> {
