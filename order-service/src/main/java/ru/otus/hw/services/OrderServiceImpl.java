@@ -7,13 +7,13 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.otus.hw.dto.ItemDto;
 import ru.otus.hw.dto.OrderCreateDto;
 import ru.otus.hw.dto.OrderDto;
-import ru.otus.hw.dto.OrderEvent;
+import ru.otus.hw.dto.OrderEventDto;
+import ru.otus.hw.dto.OrderState;
 import ru.otus.hw.exceptions.NotFoundException;
 import ru.otus.hw.kafka.ProducerService;
 import ru.otus.hw.mappers.OrderMapper;
 import ru.otus.hw.models.Item;
 import ru.otus.hw.models.Order;
-import ru.otus.hw.models.OrderState;
 import ru.otus.hw.repositories.ItemRepository;
 import ru.otus.hw.repositories.OrderRepository;
 
@@ -74,7 +74,7 @@ public class OrderServiceImpl implements OrderService {
 
         orderMapper.toDto(orderRepository.save(newOrder));
 
-        var orderEvent = new OrderEvent(
+        var orderEvent = new OrderEventDto(
                 newOrder.getUserId(),
                 newOrder.getState().toString(),
                 newOrder.getOrderNumber(),
@@ -105,7 +105,7 @@ public class OrderServiceImpl implements OrderService {
                 .forEach(i -> i.setQuantity(i.getQuantity() + 1));
         orderRepository.save(cancelledOrder);
 
-        var orderEvent = new OrderEvent(
+        var orderEvent = new OrderEventDto(
                 cancelledOrder.getUserId(),
                 cancelledOrder.getState().toString(),
                 cancelledOrder.getOrderNumber(),

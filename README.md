@@ -3,21 +3,25 @@ TODO:
 
 +users - reuse
 
-!!!order-service  <--- 
- implement sheduler (example) to cancel unpaid orders each 20 minutes
+!!!order-service  
+   !add JWT auth <---
+   !add tests for kafka after payment service is done
 
- update each item to add 1 to quantity (remove reserve)
+!!!payment-service <-- 
+   !add consumer to get OrderEvent from kafka
+      -> 1) made payment
+         2) cancel payment for cancelled
+   !save data to payments table 
+   !send to kafka to another topic orders_processed
+   !add JWT auth
+   !add tests for kafka
 
-!!!payment-service <-- implement base
-payment service -> get from kafka order - >
-save data to payments table ->
-send to kafka to another topic payments
-
-!!!spring gateway
 !!!auth service jwt
+!!!order-client
+!!!spring gateway
 
-!generator orders
+!!!update github repo with tags and description
+!!!diagrams + screenshots
+!!!prepare presentation
 
-!description
-!diagram
-!presentation
+!generator orders?

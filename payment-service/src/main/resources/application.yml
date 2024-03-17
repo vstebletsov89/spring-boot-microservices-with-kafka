@@ -1,13 +1,14 @@
 server:
-  port: 8081
+  port: 8082
 
 application:
   kafka:
-    topic: "orders"
+    input-topic: "orders"
+    output-topic: "orders_processed"
 
 spring:
   application:
-    name: order-service
+    name: payment-service
   datasource:
     url: jdbc:h2:mem:maindb
   flyway:
@@ -19,6 +20,9 @@ spring:
     show-sql: true
   kafka:
     bootstrap-servers: "127.0.0.1:9092"
+    consumer:
+      group-id: "payments-group"
+      auto-offset-reset: earliest
 
 eureka:
   client:
@@ -42,6 +46,6 @@ logging:
   file:
     name: ./logs/library.log
   level:
-    org.flywaydb: debug
+    root: info
 
 

@@ -8,7 +8,7 @@ Content-Type: application/json
 }
 
 ### Get order info
-GET http://localhost:8081/api/v1/orders/18a0b09a-4828-4f7b-b23c-9b341318ed12
+GET http://localhost:8081/api/v1/orders/d46e7f36-d289-4570-be9e-cf5d2526ac49
 
 ### Cancel order
-PATCH http://localhost:8081/api/v1/orders/18a0b09a-4828-4f7b-b23c-9b341318ed12
+PATCH http://localhost:8081/api/v1/orders/d46e7f36-d289-4570-be9e-cf5d2526ac49

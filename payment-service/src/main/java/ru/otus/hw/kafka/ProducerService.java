@@ -13,9 +13,10 @@ import ru.otus.hw.dto.OrderEventDto;
 @RequiredArgsConstructor
 public class ProducerService {
 
-    @Value("${application.kafka.topic}")
+    @Value("${application.kafka.output-topic}")
     private String topic;
 
+    //TODO: implement to send processed order
     private final KafkaTemplate<String , OrderEventDto> kafkaTemplate;
 
     public void sendOrderEvent(final OrderEventDto orderEventDto) {

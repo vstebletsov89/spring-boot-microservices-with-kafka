@@ -14,6 +14,7 @@ import ru.otus.hw.kafka.ProducerService;
 import ru.otus.hw.mappers.ItemMapperImpl;
 import ru.otus.hw.mappers.OrderMapperImpl;
 import ru.otus.hw.models.ResponseServerMessage;
+import ru.otus.hw.repositories.ItemRepository;
 import ru.otus.hw.repositories.OrderRepository;
 import ru.otus.hw.services.OrderService;
 import ru.otus.hw.services.OrderServiceImpl;
@@ -57,6 +58,9 @@ class RestExceptionHandlerTest {
 
     @MockBean
     private OrderRepository orderRepository;
+
+    @MockBean
+    private ItemRepository itemRepository;
 
     @Autowired
     private OrderController orderController;

@@ -12,7 +12,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import ru.otus.hw.dto.ItemDto;
 import ru.otus.hw.dto.OrderCreateDto;
 import ru.otus.hw.dto.OrderDto;
-import ru.otus.hw.models.OrderState;
+import ru.otus.hw.dto.OrderState;
 import ru.otus.hw.services.OrderService;
 
 import java.util.ArrayList;
