@@ -3,6 +3,7 @@ package ru.otus.hw.kafka;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
 import ru.otus.hw.dto.OrderEventDto;
@@ -17,7 +18,7 @@ public class ConsumerService {
     private final ProducerService producerService;
 
     @KafkaListener(topics = "${application.kafka.input-topic}", containerFactory="containerFactoryPaymentService")
-    public void consume(@Payload OrderEventDto eventDto) throws Exception {
+    public void consume(@Payload OrderEventDto eventDto, Acknowledgment acknowledgment) throws Exception {
         log.info("Got event from orders topic: {}", eventDto);
         //TODO: add saving to db
 
@@ -27,6 +28,9 @@ public class ConsumerService {
                 eventDto.getOrderNumber(),
                 eventDto.getUserId(),
                 eventDto.getAmount());
+
+        //manual commit
+        acknowledgment.acknowledge();
     }
 
 }
