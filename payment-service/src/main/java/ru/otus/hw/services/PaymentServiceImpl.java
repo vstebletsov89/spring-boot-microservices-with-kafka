@@ -11,7 +11,6 @@ import ru.otus.hw.models.TransactionType;
 import ru.otus.hw.repositories.PaymentRepository;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -22,7 +21,7 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Transactional
     @Override
-    public void addNewPaymentOperation(OrderEventDto orderEventDto)
+    public void create(OrderEventDto orderEventDto)
     {
         Payment payment = new Payment();
         payment.setType(TransactionType.CREATED);
@@ -37,20 +36,28 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Transactional
     @Override
-    public void updatePaymentStatus(String orderNumber, TransactionType transactionType) {
+    public void cancel(String orderNumber) {
         var payment = paymentRepository.findByOrderNumber(orderNumber)
                 .orElseThrow(() ->
                         new NotFoundException("Payment with order number '%s' not found".formatted(orderNumber)));
-        payment.setType(transactionType);
+
+        payment.setType(TransactionType.REFUND);
         payment.setUpdatedAt(LocalDateTime.now());
         paymentRepository.save(payment);
-        log.info("Payment updated {}", payment);
+        log.info("Payment canceled {}", payment);
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     @Override
-    public List<Payment> getRefundPayments() {
-        log.info("Getting refund payments");
-        return paymentRepository.findPaymentByType(TransactionType.REFUND);
+    public void executePayment(String orderNumber, long payerId) {
+        var payment = paymentRepository.findByOrderNumber(orderNumber)
+                .orElseThrow(() ->
+                        new NotFoundException("Payment with order number '%s' not found".formatted(orderNumber)));
+
+        log.info("Execute payment for order {} and payer {}", orderNumber, payerId);
+        payment.setType(TransactionType.PROCESSED);
+        payment.setUpdatedAt(LocalDateTime.now());
+        paymentRepository.save(payment);
+        log.info("Payment {} successfully executed", payment);
     }
 }
