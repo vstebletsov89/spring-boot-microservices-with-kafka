@@ -72,7 +72,7 @@ public class OrderServiceImpl implements OrderService {
                 .map(Item::getPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        orderMapper.toDto(orderRepository.save(newOrder));
+        orderRepository.save(newOrder);
 
         var orderEvent = new OrderEventDto(
                 newOrder.getUserId(),
@@ -86,6 +86,7 @@ public class OrderServiceImpl implements OrderService {
         return orderMapper.toDto(orderRepository.save(newOrder));
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<Order> getUnpaidOrders() {
         return orderRepository.findOrderByState(OrderState.PUBLISHED);

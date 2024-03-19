@@ -14,12 +14,14 @@ import jakarta.persistence.NamedAttributeNode;
 import jakarta.persistence.NamedEntityGraph;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.DecimalMin;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ru.otus.hw.dto.OrderState;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -28,14 +30,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "orders")
-@NamedEntityGraph(
-        name = "order-entity-graph",
-        attributeNodes = {
-                @NamedAttributeNode("items")
-        }
-)
-public class Order {
+@Table(name = "payments")
+public class Payment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,14 +44,15 @@ public class Order {
     private String orderNumber;
 
     @Enumerated(EnumType.STRING)
-    private OrderState state;
+    private TransactionType type;
+
+    @Column(name = "amount", nullable = false)
+    @DecimalMin(value = "0.00", message = "Amount must be non negative number")
+    private BigDecimal amount;
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinTable(name = "order_items",
-            joinColumns = @JoinColumn(name = "order_id"),
-            inverseJoinColumns = @JoinColumn(name = "item_id"))
-    private List<Item> items;
+    @Column(name = "updated_at", nullable = false)
+    private LocalDateTime updatedAt;
 }
