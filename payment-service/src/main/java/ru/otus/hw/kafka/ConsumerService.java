@@ -34,9 +34,9 @@ public class ConsumerService {
             paymentService.updatePaymentStatus(eventDto.getOrderNumber(),
                     TransactionType.REFUND);
         } else {
-            // process not expected state
+            // send failed order to Dead Letter Queue
             log.error("Invalid order state: {}", eventDto.getState());
-            //TODO: send to dead letter queue
+            producerService.sendFailedOrderEvent(eventDto);
             acknowledgment.acknowledge();
         }
 

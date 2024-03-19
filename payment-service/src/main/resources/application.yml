@@ -5,6 +5,7 @@ application:
   kafka:
     input-topic: "orders"
     output-topic: "orders_processed"
+    output-dlq-topic: "orders_failed"
 
 spring:
   application:

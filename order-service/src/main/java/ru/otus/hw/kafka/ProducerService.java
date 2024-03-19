@@ -14,15 +14,15 @@ import ru.otus.hw.dto.OrderEventDto;
 public class ProducerService {
 
     @Value("${application.kafka.topic}")
-    private String topic;
+    private String ordersTopic;
 
     private final KafkaTemplate<String , OrderEventDto> kafkaTemplate;
 
     public void sendOrderEvent(final OrderEventDto orderEventDto) {
 
-        log.info("Send event to orders topic: {}", orderEventDto);
+        log.info("Send event: {} to {} topic", orderEventDto, ordersTopic);
         final ProducerRecord<String, OrderEventDto> record =
-                new ProducerRecord<>(topic,
+                new ProducerRecord<>(ordersTopic,
                         String.valueOf(orderEventDto.getUserId()),
                         orderEventDto);
 
@@ -30,7 +30,7 @@ public class ProducerService {
 
         future.whenComplete((result, ex) -> {
             if (ex == null) {
-                log.info("Order: {} was sent to Kafka topic", orderEventDto);
+                log.info("Order: {} was sent to {} topic", orderEventDto, ordersTopic);
             }
             else {
                 log.error("Error while sending order event", ex);

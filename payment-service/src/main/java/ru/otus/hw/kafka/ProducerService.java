@@ -14,25 +14,47 @@ import ru.otus.hw.dto.OrderEventDto;
 public class ProducerService {
 
     @Value("${application.kafka.output-topic}")
-    private String topic;
+    private String processedOrdersTopic;
 
-    //TODO: implement to send processed order
+    @Value("${application.kafka.output-dlq-topic}")
+    private String failedOrdersTopic;
+
     private final KafkaTemplate<String , OrderEventDto> kafkaTemplate;
 
     public void sendProcessedOrderEvent(OrderEventDto orderEventDto) {
-        log.info("Send event to orders_processes topic: {}", orderEventDto);
+        log.info("Send event: {} to {} topic", orderEventDto, processedOrdersTopic);
         final ProducerRecord<String, OrderEventDto> record =
-                new ProducerRecord<>(topic,
+                new ProducerRecord<>(processedOrdersTopic,
                         String.valueOf(orderEventDto.getUserId()),
                         orderEventDto);
+
         var future = kafkaTemplate.send(record);
 
         future.whenComplete((result, ex) -> {
             if (ex == null) {
-                log.info("Order: {} was sent to Kafka topic", orderEventDto);
+                log.info("Processed order: {} was sent to {} topic", orderEventDto, processedOrdersTopic);
             }
             else {
-                log.error("Error while sending order event", ex);
+                log.error("Error while sending processed order event", ex);
+            }
+        });
+    }
+
+    public void sendFailedOrderEvent(OrderEventDto orderEventDto) {
+        log.info("Send error event: {} to {} topic", orderEventDto, failedOrdersTopic);
+        final ProducerRecord<String, OrderEventDto> record =
+                new ProducerRecord<>(failedOrdersTopic,
+                        String.valueOf(orderEventDto.getUserId()),
+                        orderEventDto);
+
+        var future = kafkaTemplate.send(record);
+
+        future.whenComplete((result, ex) -> {
+            if (ex == null) {
+                log.info("Failed order: {} was sent to {} topic", orderEventDto, failedOrdersTopic);
+            }
+            else {
+                log.error("Error while sending failed order event", ex);
             }
         });
     }
