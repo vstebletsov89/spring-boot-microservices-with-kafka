@@ -10,6 +10,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableDiscoveryClient
 public class AuthServiceApplication {
     public static void main(String[] args) {
-        SpringApplication.run(OrderServiceApplication.class, args);
+        SpringApplication.run(AuthServiceApplication.class, args);
     }
 }
