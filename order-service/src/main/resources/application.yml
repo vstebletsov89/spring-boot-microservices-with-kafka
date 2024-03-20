@@ -40,7 +40,7 @@ management:
 
 logging:
   file:
-    name: ./logs/library.log
+    name: ./logs/order.log
   level:
     org.flywaydb: debug
 

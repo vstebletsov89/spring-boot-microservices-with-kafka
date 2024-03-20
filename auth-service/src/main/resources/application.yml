@@ -1,15 +1,9 @@
 server:
-  port: 8082
-
-application:
-  kafka:
-    input-topic: "orders"
-    output-topic: "orders_processed"
-    output-dlq-topic: "orders_failed"
+  port: 8083
 
 spring:
   application:
-    name: payment-service
+    name: auth-service
   datasource:
     url: jdbc:h2:mem:maindb
   flyway:
@@ -19,11 +13,6 @@ spring:
     hibernate:
       ddl-auto: none
     show-sql: true
-  kafka:
-    bootstrap-servers: "127.0.0.1:9092"
-    consumer:
-      group-id: "payments-group"
-      auto-offset-reset: earliest
 
 eureka:
   client:
@@ -45,8 +34,6 @@ management:
 
 logging:
   file:
-    name: ./logs/payment.log
-  level:
-    root: info
+    name: ./logs/auth.log
 
 
