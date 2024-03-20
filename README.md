@@ -3,22 +3,24 @@ TODO:
 
 +users - reuse
 
+!!!auth service jwt <-- !!!
+!!!order-client
+!!!spring gateway 
+
 !!!order-service  
    !add JWT auth <---
-   !add tests for kafka after payment service is done
+   !add tests for kafka 
 
-!!!payment-service <-- 
-   !add consumer to get OrderEvent from kafka
-      -> 1) made payment
-         2) cancel payment for cancelled
-   !save data to payments table 
-   !send to kafka to another topic orders_processed
+!!!payment-service <--
    !add JWT auth
    !add tests for kafka
 
-!!!auth service jwt
-!!!order-client
-!!!spring gateway
+!!!add postgresql - check postgresql driver in pom
+<dependency>
+<groupId>org.postgresql</groupId>
+<artifactId>postgresql</artifactId>
+<scope>runtime</scope>
+</dependency>
 
 !!!update github repo with tags and description
 !!!diagrams + screenshots
