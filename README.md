@@ -4,6 +4,8 @@ TODO:
 +users - reuse
 
 !!!auth service jwt <-- !!!
+https://medium.com/@minadev/authentication-and-authorization-with-spring-security-bf22e985f2cb
+
 !!!order-client
 !!!spring gateway 
 
