@@ -1,10 +1,6 @@
-package ru.otus.hw.security;
+package ru.otus.hw.services;
 
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,27 +9,23 @@ import ru.otus.hw.dto.LoginResponseDto;
 import ru.otus.hw.dto.SignupRequestDto;
 import ru.otus.hw.dto.SignupResponseDto;
 import ru.otus.hw.exceptions.DuplicateUserException;
+import ru.otus.hw.exceptions.NotFoundException;
 import ru.otus.hw.models.Role;
 import ru.otus.hw.models.User;
 import ru.otus.hw.repositories.UserRepository;
+import ru.otus.hw.security.JwtService;
 
-import java.security.Key;
 import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    private static final Key SECRET_KEY = Keys.hmacShaKeyFor(SignatureAlgorithm.HS256);
-
-    private static final int MINUTES = 60;
-
     private final UserRepository userRepository;
 
-    // custom BcryptPasswordEncoder is used
-    private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
-    private final AuthenticationManager authenticationManager;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     @Override
@@ -48,7 +40,7 @@ public class UserServiceImpl implements UserService {
         User user = new User();
         user.setUsername(signupRequestDto.getUsername());
         user.setPassword(hashPassword);
-        user.setRole(Role.USER.toString());
+        user.setRole(Role.USER);
         user.setActive(true);
         user.setLastLogin(LocalDateTime.now());
 
@@ -59,11 +51,9 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     @Override
     public LoginResponseDto login(LoginRequestDto loginRequestDto) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        loginRequestDto.getUsername(),
-                        loginRequestDto.getPassword()));
-        //TOOD: implement it
+        var user = userRepository.findByUsername(loginRequestDto.getUsername())
+                .orElseThrow(() -> new NotFoundException("User '%s' not found".formatted(loginRequestDto.getUsername())));
 
+        return new LoginResponseDto(user.getUsername(), jwtService.generateToken(user));
     }
 }

@@ -21,7 +21,7 @@ class OrderCancelScheduleTest {
 
     @Test
     public void shouldRunScheduler() throws InterruptedException {
-        Thread.sleep(61000);
+        Thread.sleep(31000);
         verify(orderCancelSchedule, atLeast(1))
                 .cancelUnpaidOrders();
     }

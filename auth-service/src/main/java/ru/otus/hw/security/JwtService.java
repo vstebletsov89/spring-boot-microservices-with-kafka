@@ -1,9 +1,14 @@
 package ru.otus.hw.security;
 
-public class JwtService {
+import org.springframework.security.core.userdetails.UserDetails;
+import ru.otus.hw.models.User;
 
-    String generateToken(UserDetails userDetails);
-    String extractUserName(String token);
+public interface JwtService {
 
-    boolean isTokenValid(String token, UserDetails userDetails);
+    String generateToken(User user);
+
+    String getUsernameFromToken(String token);
+
+    boolean validateToken(String token, UserDetails userDetails);
+
 }

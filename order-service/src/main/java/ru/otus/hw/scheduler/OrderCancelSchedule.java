@@ -19,7 +19,7 @@ public class OrderCancelSchedule {
 
     private final OrderService orderService;
 
-    @Scheduled(fixedRate = 60000)
+    @Scheduled(fixedRate = 30000)
     public void cancelUnpaidOrders() {
         log.info("Scheduler to cancel unpaid orders");
         List<Order> unpaidOrders = orderService.getUnpaidOrders();

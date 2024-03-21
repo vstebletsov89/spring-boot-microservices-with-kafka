@@ -35,7 +35,7 @@ public class User {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    private String role;
+    private Role role;
 
     @Column(name = "last_login", nullable = false)
     private LocalDateTime lastLogin;

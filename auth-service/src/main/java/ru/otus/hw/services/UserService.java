@@ -1,4 +1,4 @@
-package ru.otus.hw.security;
+package ru.otus.hw.services;
 
 import ru.otus.hw.dto.LoginRequestDto;
 import ru.otus.hw.dto.LoginResponseDto;

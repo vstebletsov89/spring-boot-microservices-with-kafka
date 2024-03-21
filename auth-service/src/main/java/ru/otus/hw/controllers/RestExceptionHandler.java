@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import ru.otus.hw.exceptions.DuplicateUserException;
 import ru.otus.hw.exceptions.NotFoundException;
 import ru.otus.hw.models.ResponseServerMessage;
 
@@ -17,6 +18,16 @@ public class RestExceptionHandler {
     @ExceptionHandler(NotFoundException.class)
     ResponseServerMessage notFoundError(NotFoundException exception) {
         log.info("notFound exception: {}", exception.getMessage());
+
+        return ResponseServerMessage.builder()
+                .errorMessage(exception.getMessage())
+                .build();
+    }
+
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ExceptionHandler(DuplicateUserException.class)
+    ResponseServerMessage duplicateError(DuplicateUserException exception) {
+        log.info("duplicate exception: {}", exception.getMessage());
 
         return ResponseServerMessage.builder()
                 .errorMessage(exception.getMessage())

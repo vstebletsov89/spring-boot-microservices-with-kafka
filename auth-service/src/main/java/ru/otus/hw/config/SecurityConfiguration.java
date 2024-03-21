@@ -4,53 +4,41 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
-import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @RequiredArgsConstructor
 @EnableWebSecurity
 @Configuration
 public class SecurityConfiguration {
 
-    //TODO: add controller
-    //TODO: add helper and security configuration
-    //TODO: add tests
-
     private final UserDetailsService userDetailsService;
+
+    private final JwtAuthFilter jwtAuthFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(HttpMethod.GET,
-                                "/",
-                                "/api/v1/books").hasRole("GUEST")
-                        .requestMatchers(HttpMethod.GET,
-                                "/api/v1/**",
-                                "/comments/**",
-                                "/books/**").hasRole("USER")
+                        // public endpoints
                         .requestMatchers(HttpMethod.POST,
-                                "/api/v1/books/",
-                                "/api/v1/comments").hasRole("USER")
-                        .requestMatchers(HttpMethod.PUT,
-                                "/api/v1/books/",
-                                "/api/v1/comments").hasRole("USER")
-                        .requestMatchers(HttpMethod.DELETE,
-                                "/api/v1/books/{id}").hasRole("ADMIN")
-                        .requestMatchers("/datarest/**", "/actuator/**").hasRole("ADMIN")
+                                "/api/v1/auth/signup",
+                                "/api/v1/auth/login").permitAll()
+                        // private endpoints
                         .anyRequest().authenticated())
-                .formLogin(Customizer.withDefaults())
+                .authenticationProvider(authenticationProvider()).addFilterBefore(
+                        jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
@@ -65,15 +53,5 @@ public class SecurityConfiguration {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    static RoleHierarchy roleHierarchy() {
-        RoleHierarchyImpl hierarchy = new RoleHierarchyImpl();
-        hierarchy.setHierarchy("""
-                ROLE_ADMIN > ROLE_STAFF
-                ROLE_STAFF > ROLE_USER
-                ROLE_USER > ROLE_GUEST""");
-        return hierarchy;
     }
 }
