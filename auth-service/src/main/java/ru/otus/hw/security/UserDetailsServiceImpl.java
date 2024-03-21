@@ -2,6 +2,7 @@ package ru.otus.hw.security;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -10,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.otus.hw.repositories.UserRepository;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -30,6 +32,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return org.springframework.security.core.userdetails.User.builder()
                 .username(user.getUsername())
                 .password(user.getPassword())
+                .authorities((GrantedAuthority) Collections.singletonList(user.getRole()))
                 .build();
     }
 }
