@@ -35,7 +35,8 @@ public class JwtServiceImpl implements JwtService{
                 .subject(user.getUsername())
                 .issuedAt(Date.from(now))
                 .expiration(Date.from(now.plus(MINUTES, ChronoUnit.MINUTES)))
-                .signWith(getSigningKey(), SignatureAlgorithm.HS256).compact();
+                .signWith(getSigningKey())
+                .compact();
     }
 
     @Override
@@ -51,7 +52,7 @@ public class JwtServiceImpl implements JwtService{
 
     private Claims getTokenPayload(String token) {
         return Jwts.parser()
-                .setSigningKey(jwtSigningKey)
+                .verifyWith(getSigningKey())
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();
