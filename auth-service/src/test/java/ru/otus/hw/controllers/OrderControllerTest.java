@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @DisplayName("Проверка работы контроллера заказов")
-@WebMvcTest(OrderController.class)
+@WebMvcTest(AuthController.class)
 class OrderControllerTest {
 
     private static List<ItemDto> expectedItems = new ArrayList<>();

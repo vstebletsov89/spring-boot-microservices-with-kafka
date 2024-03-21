@@ -34,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @DisplayName("Проверка работы глобального обработчика ошибок")
 @SpringBootTest(classes = {
-        OrderController.class,
+        AuthController.class,
         OrderServiceImpl.class,
         RestExceptionHandler.class,
         OrderMapperImpl.class,
@@ -63,7 +63,7 @@ class RestExceptionHandlerTest {
     private ItemRepository itemRepository;
 
     @Autowired
-    private OrderController orderController;
+    private AuthController orderController;
 
     @Autowired
     private RestExceptionHandler restExceptionHandler;
