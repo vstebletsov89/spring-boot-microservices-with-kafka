@@ -2,7 +2,6 @@ package ru.otus.hw.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +19,7 @@ import java.util.Date;
 @Slf4j
 @RequiredArgsConstructor
 @Service
-public class JwtServiceImpl implements JwtService{
+public class JwtServiceImpl implements JwtService {
 
     @Value("${application.jwt.signing-key}")
     private String jwtSigningKey;
@@ -31,6 +30,7 @@ public class JwtServiceImpl implements JwtService{
     public String generateToken(User user) {
         var now = Instant.now();
         return Jwts.builder()
+                .claim("user_id", user.getId())
                 .claim("role", user.getRole())
                 .subject(user.getUsername())
                 .issuedAt(Date.from(now))
