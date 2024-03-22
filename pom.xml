@@ -8,10 +8,12 @@
     <artifactId>spring-boot-microservices-with-kafka</artifactId>
     <version>1.0-SNAPSHOT</version>
     <modules>
-        <module>order-service</module>
-        <module>library-client</module>
-        <module>order-dto</module>
+        <module>auth-service</module>
         <module>eureka-server</module>
+        <module>order-client</module>
+        <module>order-dto</module>
+        <module>order-service</module>
+        <module>payment-service</module>
     </modules>
 
     <packaging>pom</packaging>
