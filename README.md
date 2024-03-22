@@ -5,11 +5,12 @@ TODO:
 https://medium.com/@minadev/authentication-and-authorization-with-spring-security-bf22e985f2cb
 https://medium.com/@truongbui95/jwt-authentication-and-authorization-with-spring-boot-3-and-spring-security-6-2f90f9337421
 
-!!!order-client
+!!!order-client - check
+   !add JWT auth <---
 
-
-
-!!!spring gateway 
+!!!spring gateway <-- !!!
+https://github.com/SaiUpadhyayula/spring-boot-microservices/blob/master/api-gateway/src/main/resources/application.properties
+https://www.baeldung.com/spring-security-oauth-resource-server
 
 !!!order-service  
    !add JWT auth <---
