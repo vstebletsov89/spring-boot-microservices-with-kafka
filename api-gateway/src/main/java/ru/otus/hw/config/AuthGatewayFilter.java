@@ -76,11 +76,7 @@ public class AuthGatewayFilter implements GatewayFilter {
         var claims = getTokenPayload(token);
         exchange.getRequest()
                 .mutate()
-                .header("userName", claims.getSubject())
-                .header("userId",
-                        String.valueOf(claims.getOrDefault("user_id", "undefined")))
-                .header("role",
-                        String.valueOf(claims.getOrDefault("role", "undefined")))
+                .header("User-Name", claims.getSubject())
                 .build()
         ;
         log.info("updated headers: {}",  exchange.getRequest().getHeaders());

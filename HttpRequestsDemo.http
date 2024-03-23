@@ -7,15 +7,6 @@ Content-Type: application/json
   "password": "demo_password"
 }
 
-### Login user
-POST http://localhost:8080/api/v1/auth/login
-Content-Type: application/json
-
-{
-  "username": "demo_user",
-  "password": "demo_password"
-}
-
 ### Create order (without Authorization token)
 POST http://localhost:8080/api/v1/orders
 Content-Type: application/json
@@ -25,9 +16,22 @@ Content-Type: application/json
   "items": [{"id": 1}, {"id": 2}, {"id": 3}]
 }
 
+### Login user
+POST http://localhost:8080/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "username": "demo_user",
+  "password": "demo_password"
+}
+
+> {%
+    client.global.set("auth_token", response.body.token);
+%}
+
 ### Create order (with Authorization token)
 POST http://localhost:8080/api/v1/orders
-Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJ1c2VyX2lkIjo0LCJyb2xlIjoiVVNFUiIsInN1YiI6ImRlbW9fdXNlciIsImlhdCI6MTcxMTE5MjYxMCwiZXhwIjoxNzExMTk2MjEwfQ.L8re_0-h_Y8LK6zVUlxhTTd5dTof2cOJcuacP-cXsK5VgE8U1WtvcFc8w9J8mMgp
+Authorization: Bearer {{auth_token}}
 Content-Type: application/json
 
 {
@@ -37,10 +41,10 @@ Content-Type: application/json
 
 
 ### Get order info
-GET http://localhost:8080/api/v1/orders/50137ce9-dfd5-42b4-adf1-0425c3132bae
-Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJ1c2VyX2lkIjo0LCJyb2xlIjoiVVNFUiIsInN1YiI6ImRlbW9fdXNlciIsImlhdCI6MTcxMTE5MjYxMCwiZXhwIjoxNzExMTk2MjEwfQ.L8re_0-h_Y8LK6zVUlxhTTd5dTof2cOJcuacP-cXsK5VgE8U1WtvcFc8w9J8mMgp
+GET http://localhost:8080/api/v1/orders/008f859c-c51c-4945-8765-ba9cfbf8dc66
+Authorization: Bearer {{auth_token}}
 
 
 ### Cancel order
 PUT http://localhost:8080/api/v1/orders/50137ce9-dfd5-42b4-adf1-0425c3132bae
-Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJ1c2VyX2lkIjo0LCJyb2xlIjoiVVNFUiIsInN1YiI6ImRlbW9fdXNlciIsImlhdCI6MTcxMTE5MjYxMCwiZXhwIjoxNzExMTk2MjEwfQ.L8re_0-h_Y8LK6zVUlxhTTd5dTof2cOJcuacP-cXsK5VgE8U1WtvcFc8w9J8mMgp
+Authorization: Bearer {{auth_token}}
