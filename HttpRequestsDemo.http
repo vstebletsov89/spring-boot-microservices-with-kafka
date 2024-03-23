@@ -1,0 +1,32 @@
+### Signup user
+POST http://localhost:8080/api/v1/auth/signup
+Content-Type: application/json
+
+{
+  "username": "demo_user",
+  "password": "demo_password"
+}
+
+### Login user
+POST http://localhost:8080/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "username": "demo_user",
+  "password": "demo_password"
+}
+
+### Create order
+POST http://localhost:8080/api/v1/orders
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "items": [{"id": 1}, {"id": 2}, {"id": 3}]
+}
+
+### Get order info
+GET http://localhost:8080/api/v1/orders/d46e7f36-d289-4570-be9e-cf5d2526ac49
+
+### Cancel order
+PATCH http://localhost:8080/api/v1/orders/d46e7f36-d289-4570-be9e-cf5d2526ac49

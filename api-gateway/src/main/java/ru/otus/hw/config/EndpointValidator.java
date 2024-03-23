@@ -14,7 +14,7 @@ public class EndpointValidator {
             "auth/login"
     );
 
-    public Predicate<ServerHttpRequest> isPublicEndpoint =
+    public Predicate<ServerHttpRequest> isPrivateEndpoint =
             request -> PUBLIC_ENDPOINTS
                     .stream()
                     .noneMatch(uri -> request

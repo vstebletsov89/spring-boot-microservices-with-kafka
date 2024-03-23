@@ -1,7 +1,13 @@
 package ru.otus.hw.config;
 
-import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
@@ -10,41 +16,44 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
+import javax.crypto.SecretKey;
+import java.util.Date;
+
+@RefreshScope
+@RequiredArgsConstructor
 @Component
-@AllArgsConstructor
-public class AuthGatewayFilter {
+public class AuthGatewayFilter implements GatewayFilter {
+
+    @Value("${application.jwt.signing-key}")
+    private String jwtSigningKey;
 
     private final EndpointValidator endpointValidator;
-
-    private final JwtUtil jwtUtil;
-
-    @Autowired
-    public AuthenticationFilter(RouterValidator routerValidator, JwtUtil jwtUtil) {
-        this.routerValidator = routerValidator;
-        this.jwtUtil = jwtUtil;
-    }
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         ServerHttpRequest request = exchange.getRequest();
 
-        if (routerValidator.isSecured.test(request)) {
-            if (this.isAuthMissing(request)) {
-                return this.onError(exchange, HttpStatus.UNAUTHORIZED);
+        // check user is authorized for private endpoints
+        if (endpointValidator.isPrivateEndpoint.test(request)) {
+
+            if (isAuthMissing(request)) {
+                return authError(exchange, HttpStatus.UNAUTHORIZED);
             }
 
-            final String token = this.getAuthHeader(request);
+            String token = getAuthHeader(request);
+            Claims claims = getTokenPayload(token);
+            boolean isInvalid =  claims.getExpiration().before(new Date());
 
-            if (jwtUtil.isInvalid(token)) {
-                return this.onError(exchange, HttpStatus.FORBIDDEN);
+            if (isInvalid) {
+                return authError(exchange, HttpStatus.FORBIDDEN);
             }
 
-            this.updateRequest(exchange, token);
+            updateRequest(exchange, token);
         }
         return chain.filter(exchange);
     }
 
-    private Mono<Void> onError(ServerWebExchange exchange, HttpStatus httpStatus) {
+    private Mono<Void> authError(ServerWebExchange exchange, HttpStatus httpStatus) {
         ServerHttpResponse response = exchange.getResponse();
         response.setStatusCode(httpStatus);
         return response.setComplete();
@@ -59,9 +68,28 @@ public class AuthGatewayFilter {
     }
 
     private void updateRequest(ServerWebExchange exchange, String token) {
-        Claims claims = jwtUtil.getAllClaimsFromToken(token);
-        exchange.getRequest().mutate()
-                .header("email", String.valueOf(claims.get("email")))
-                .build();
+        var claims = getTokenPayload(token);
+        exchange.getRequest()
+                .mutate()
+                .header("userName", claims.getSubject())
+                .header("userId",
+                        String.valueOf(claims.getOrDefault("user_id", "undefined")))
+                .header("role",
+                        String.valueOf(claims.getOrDefault("role", "undefined")))
+                .build()
+        ;
+    }
+
+    private Claims getTokenPayload(String token) {
+        return Jwts.parser()
+                .verifyWith(getSigningKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
+    }
+
+    private SecretKey getSigningKey() {
+        byte[] keyBytes = Decoders.BASE64.decode(jwtSigningKey);
+        return Keys.hmacShaKeyFor(keyBytes);
     }
 }
