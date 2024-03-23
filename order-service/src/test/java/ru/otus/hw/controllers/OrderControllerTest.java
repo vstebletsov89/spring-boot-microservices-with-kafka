@@ -24,8 +24,8 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -103,7 +103,7 @@ class OrderControllerTest {
                 .when(orderService)
                 .cancelByOrderNumber(anyString());
 
-        mockMvc.perform(patch("/api/v1/orders/{orderNumber}",
+        mockMvc.perform(put("/api/v1/orders/{orderNumber}",
                         "12345"))
                 .andDo(print())
                 .andExpect(status().isOk())

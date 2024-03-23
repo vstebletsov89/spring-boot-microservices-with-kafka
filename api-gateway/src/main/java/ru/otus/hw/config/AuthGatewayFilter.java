@@ -5,8 +5,8 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.http.HttpStatus;
@@ -19,7 +19,7 @@ import reactor.core.publisher.Mono;
 import javax.crypto.SecretKey;
 import java.util.Date;
 
-@RefreshScope
+@Slf4j
 @RequiredArgsConstructor
 @Component
 public class AuthGatewayFilter implements GatewayFilter {
@@ -32,19 +32,24 @@ public class AuthGatewayFilter implements GatewayFilter {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         ServerHttpRequest request = exchange.getRequest();
+        log.info("request: {}", request.getURI().getPath());
 
         // check user is authorized for private endpoints
         if (endpointValidator.isPrivateEndpoint.test(request)) {
 
             if (isAuthMissing(request)) {
+                log.info("Authorization is missing");
                 return authError(exchange, HttpStatus.UNAUTHORIZED);
             }
 
-            String token = getAuthHeader(request);
+            String authHeader = getAuthHeader(request);
+            String token = authHeader.substring(7); //remove bearer
+            log.info("token: {}", token);
             Claims claims = getTokenPayload(token);
-            boolean isInvalid =  claims.getExpiration().before(new Date());
+            boolean isInvalid = claims.getExpiration().before(new Date());
 
             if (isInvalid) {
+                log.info("Token expired");
                 return authError(exchange, HttpStatus.FORBIDDEN);
             }
 
@@ -78,6 +83,7 @@ public class AuthGatewayFilter implements GatewayFilter {
                         String.valueOf(claims.getOrDefault("role", "undefined")))
                 .build()
         ;
+        log.info("updated headers: {}",  exchange.getRequest().getHeaders());
     }
 
     private Claims getTokenPayload(String token) {

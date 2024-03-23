@@ -4,9 +4,9 @@ import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import jakarta.validation.Valid;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import ru.otus.hw.dto.OrderCreateDto;
 import ru.otus.hw.dto.OrderDto;
@@ -28,7 +28,7 @@ public interface OrderServiceProxy {
     OrderDto createOrder(@RequestBody @Valid OrderCreateDto orderCreateDto);
 
     @CircuitBreaker(name = "cancelOrder", fallbackMethod = "buildFallbackResponse")
-    @PatchMapping("/api/v1/orders/{orderNumber}")
+    @PutMapping("/api/v1/orders/{orderNumber}")
     String cancelOrder (@PathVariable("orderNumber") String orderNumber);
 
     @SuppressWarnings("unused")
