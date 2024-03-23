@@ -15,7 +15,7 @@ import java.util.List;
 @Component
 public class OrderCancelSchedule {
 
-    private final long OUTDATED_INTERVAL_MINUTES = 20;
+    private static final int OUTDATED_INTERVAL_MINUTES = 20;
 
     private final OrderService orderService;
 

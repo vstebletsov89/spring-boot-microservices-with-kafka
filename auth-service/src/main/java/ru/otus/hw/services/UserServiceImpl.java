@@ -52,7 +52,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public LoginResponseDto login(LoginRequestDto loginRequestDto) {
         var user = userRepository.findByUsername(loginRequestDto.getUsername())
-                .orElseThrow(() -> new NotFoundException("User '%s' not found".formatted(loginRequestDto.getUsername())));
+                .orElseThrow(() ->
+                        new NotFoundException("User '%s' not found".formatted(loginRequestDto.getUsername())));
 
         return new LoginResponseDto(user.getUsername(), jwtService.generateToken(user));
     }

@@ -30,8 +30,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         // Header: "Authorization: Bearer <token>"
         String authHeader = request.getHeader("Authorization");
-        String token;
-        String username;
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             // bypass login and signup requests
@@ -39,20 +37,21 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             return;
         }
 
-        token = authHeader.substring(7); //remove bearer
-        username = jwtService.getUsernameFromToken(token);
+        String token = authHeader.substring(7); //remove bearer
+        String username = jwtService.getUsernameFromToken(token);
+        setAuthentication(request, username, token);
+        filterChain.doFilter(request, response);
+    }
+
+    private void setAuthentication(HttpServletRequest request, String username, String token) {
         if (SecurityContextHolder.getContext().getAuthentication() == null) {
             var userDetails = userDetailsService.loadUserByUsername(username);
             if (jwtService.validateToken(token, userDetails)) {
                 var authToken = new UsernamePasswordAuthenticationToken(
-                        userDetails,
-                        null,
-                        null);
+                        userDetails, null, null);
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
         }
-
-        filterChain.doFilter(request, response);
     }
 }

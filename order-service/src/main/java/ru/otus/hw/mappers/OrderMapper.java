@@ -4,7 +4,6 @@ import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
-import ru.otus.hw.dto.OrderCreateDto;
 import ru.otus.hw.dto.OrderDto;
 import ru.otus.hw.models.Order;
 

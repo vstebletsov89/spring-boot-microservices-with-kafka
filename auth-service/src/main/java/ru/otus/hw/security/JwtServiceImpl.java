@@ -21,10 +21,10 @@ import java.util.Date;
 @Service
 public class JwtServiceImpl implements JwtService {
 
+    private static final int MINUTES = 60;
+
     @Value("${application.jwt.signing-key}")
     private String jwtSigningKey;
-
-    private static final int MINUTES = 60;
 
     @Override
     public String generateToken(User user) {

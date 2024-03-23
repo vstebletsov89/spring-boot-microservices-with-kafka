@@ -31,8 +31,7 @@ public class ProducerService {
         future.whenComplete((result, ex) -> {
             if (ex == null) {
                 log.info("Order: {} was sent to {} topic", orderEventDto, ordersTopic);
-            }
-            else {
+            } else {
                 log.error("Error while sending order event", ex);
             }
         });

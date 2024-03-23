@@ -33,8 +33,7 @@ public class ProducerService {
         future.whenComplete((result, ex) -> {
             if (ex == null) {
                 log.info("Processed order: {} was sent to {} topic", orderEventDto, processedOrdersTopic);
-            }
-            else {
+            } else {
                 log.error("Error while sending processed order event", ex);
             }
         });
@@ -52,8 +51,7 @@ public class ProducerService {
         future.whenComplete((result, ex) -> {
             if (ex == null) {
                 log.info("Failed order: {} was sent to {} topic", orderEventDto, failedOrdersTopic);
-            }
-            else {
+            } else {
                 log.error("Error while sending failed order event", ex);
             }
         });

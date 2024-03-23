@@ -3,8 +3,6 @@ package ru.otus.hw.services;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.boot.test.context.SpringBootTest;
-import ru.otus.hw.mappers.ItemMapperImpl;
-import ru.otus.hw.mappers.OrderMapperImpl;
 
 @DisplayName("Проверка работы сервиса оплаты")
 @SpringBootTest(classes = {PaymentServiceImpl.class})

@@ -36,7 +36,7 @@ public class SecurityConfiguration {
                                 "/api/v1/auth/signup",
                                 "/api/v1/auth/login").permitAll()
                         // private endpoints
-                        .requestMatchers( "/actuator/**").hasRole("ADMIN")
+                        .requestMatchers("/actuator/**").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .authenticationProvider(authenticationProvider()).addFilterBefore(
                         jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)

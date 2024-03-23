@@ -33,9 +33,8 @@ public class AuthGatewayFilter implements GatewayFilter {
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         ServerHttpRequest request = exchange.getRequest();
         log.info("request: {}", request.getURI().getPath());
-
         // check user is authorized for private endpoints
-        if (endpointValidator.isPrivateEndpoint.test(request)) {
+        if (endpointValidator.getPrivateEndpoint().test(request)) {
 
             if (isAuthMissing(request)) {
                 log.info("Authorization is missing");
@@ -52,7 +51,6 @@ public class AuthGatewayFilter implements GatewayFilter {
                 log.info("Token expired");
                 return authError(exchange, HttpStatus.FORBIDDEN);
             }
-
             updateRequest(exchange, token);
         }
         return chain.filter(exchange);

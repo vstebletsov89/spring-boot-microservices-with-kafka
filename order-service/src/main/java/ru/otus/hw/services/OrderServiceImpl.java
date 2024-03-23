@@ -58,29 +58,9 @@ public class OrderServiceImpl implements OrderService {
                         .toList());
         log.info("order items {}", orderItems);
 
-        newOrder.setUserId(orderCreateDto.getUserId());
-        newOrder.setItems(orderItems);
-        newOrder.setOrderNumber(UUID.randomUUID().toString());
-        newOrder.setState(OrderState.CREATED);
-        newOrder.setCreatedAt(LocalDateTime.now());
-        // reserve item in stock
-        newOrder.getItems()
-                .forEach(i -> i.setQuantity(i.getQuantity() - 1));
-
-        var amount = newOrder.getItems()
-                .stream()
-                .map(Item::getPrice)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-
+        reserveItems(orderCreateDto, newOrder, orderItems);
         orderRepository.save(newOrder);
-
-        var orderEvent = new OrderEventDto(
-                newOrder.getUserId(),
-                newOrder.getState().toString(),
-                newOrder.getOrderNumber(),
-                amount);
-
-        producerService.sendOrderEvent(orderEvent);
+        publishOrder(newOrder);
         newOrder.setState(OrderState.PUBLISHED);
 
         return orderMapper.toDto(orderRepository.save(newOrder));
@@ -115,4 +95,29 @@ public class OrderServiceImpl implements OrderService {
         producerService.sendOrderEvent(orderEvent);
     }
 
+    private void publishOrder(Order newOrder) {
+        var amount = newOrder.getItems()
+                .stream()
+                .map(Item::getPrice)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        var orderEvent = new OrderEventDto(
+                newOrder.getUserId(),
+                newOrder.getState().toString(),
+                newOrder.getOrderNumber(),
+                amount);
+
+        producerService.sendOrderEvent(orderEvent);
+    }
+
+    private void reserveItems(OrderCreateDto orderCreateDto, Order newOrder, List<Item> orderItems) {
+        newOrder.setUserId(orderCreateDto.getUserId());
+        newOrder.setItems(orderItems);
+        newOrder.setOrderNumber(UUID.randomUUID().toString());
+        newOrder.setState(OrderState.CREATED);
+        newOrder.setCreatedAt(LocalDateTime.now());
+        // reserve item in stock
+        newOrder.getItems()
+                .forEach(i -> i.setQuantity(i.getQuantity() - 1));
+    }
 }

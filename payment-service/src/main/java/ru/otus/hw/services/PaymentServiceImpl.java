@@ -21,8 +21,7 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Transactional
     @Override
-    public void create(OrderEventDto orderEventDto)
-    {
+    public void create(OrderEventDto orderEventDto) {
         Payment payment = new Payment();
         payment.setType(TransactionType.CREATED);
         payment.setUserId(orderEventDto.getUserId());

@@ -21,12 +21,10 @@ public class ConsumerService {
 
     private final PaymentService paymentService;
 
-    @KafkaListener(topics = "${application.kafka.input-topic}", containerFactory="containerFactoryPaymentService")
+    @KafkaListener(topics = "${application.kafka.input-topic}", containerFactory = "containerFactoryPaymentService")
     public void consume(@Payload OrderEventDto eventDto, Acknowledgment acknowledgment) {
         log.info("Got event from orders topic: {}", eventDto);
-
         try {
-
             if (eventDto.getState().equals(OrderState.CREATED.toString())) {
                 paymentService.create(eventDto);
                 paymentService.executePayment(eventDto.getOrderNumber(), eventDto.getUserId());
@@ -39,14 +37,7 @@ public class ConsumerService {
                 acknowledgment.acknowledge();
             }
 
-            // payment completed, send event to processed topic
-            eventDto.setState(OrderState.COMPLETED.toString());
-            producerService.sendProcessedOrderEvent(eventDto);
-            log.info("Order {} was processed for user {} amount: {}",
-                    eventDto.getOrderNumber(),
-                    eventDto.getUserId(),
-                    eventDto.getAmount());
-
+            processPayment(eventDto);
             // manual commit
             acknowledgment.acknowledge();
         } catch (Exception ex) {
@@ -54,5 +45,15 @@ public class ConsumerService {
             // event will be redelivered
             acknowledgment.nack(Duration.ofSeconds(10));
         }
+    }
+
+    private void processPayment(OrderEventDto eventDto) {
+        // payment completed, send event to processed topic
+        eventDto.setState(OrderState.COMPLETED.toString());
+        producerService.sendProcessedOrderEvent(eventDto);
+        log.info("Order {} was processed for user {} amount: {}",
+                eventDto.getOrderNumber(),
+                eventDto.getUserId(),
+                eventDto.getAmount());
     }
 }
