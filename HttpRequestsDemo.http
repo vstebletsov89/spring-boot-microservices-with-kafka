@@ -39,12 +39,19 @@ Content-Type: application/json
   "items": [{"id": 1}, {"id": 2}, {"id": 3}]
 }
 
+> {%
+    client.global.set("order_number", response.body.orderNumber);
+%}
 
 ### Get order info
-GET http://localhost:8080/api/v1/orders/008f859c-c51c-4945-8765-ba9cfbf8dc66
+GET http://localhost:8080/api/v1/orders/{{order_number}}
 Authorization: Bearer {{auth_token}}
 
 
 ### Cancel order
-PUT http://localhost:8080/api/v1/orders/50137ce9-dfd5-42b4-adf1-0425c3132bae
+PUT http://localhost:8080/api/v1/orders/{{order_number}}
+Authorization: Bearer {{auth_token}}
+
+### Get canceled order info
+GET http://localhost:8080/api/v1/orders/{{order_number}}
 Authorization: Bearer {{auth_token}}
