@@ -3,8 +3,6 @@ TODO:
 
 !!!add zipkin + sleuth for tracing services <--
 
-!!!checkstyle for order-dto fix or exclude <-- !!!
-
 !!!order-service
    !add tests for kafka <--
 

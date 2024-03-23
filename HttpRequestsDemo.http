@@ -47,7 +47,6 @@ Content-Type: application/json
 GET http://localhost:8080/api/v1/orders/{{order_number}}
 Authorization: Bearer {{auth_token}}
 
-
 ### Cancel order
 PUT http://localhost:8080/api/v1/orders/{{order_number}}
 Authorization: Bearer {{auth_token}}

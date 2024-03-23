@@ -25,19 +25,22 @@ public class ConsumerService {
     public void consume(@Payload OrderEventDto eventDto, Acknowledgment acknowledgment) {
         log.info("Got event from orders topic: {}", eventDto);
         try {
+            OrderState orderState;
             if (eventDto.getState().equals(OrderState.CREATED.toString())) {
                 paymentService.create(eventDto);
                 paymentService.executePayment(eventDto.getOrderNumber(), eventDto.getUserId());
+                orderState = OrderState.COMPLETED;
             } else if (eventDto.getState().equals(OrderState.CANCELED.toString())) {
                 paymentService.cancel(eventDto.getOrderNumber());
+                orderState = OrderState.CANCELED;
             } else {
                 // send failed order to Dead Letter Queue
                 log.error("Failed order state: {}", eventDto.getState());
                 producerService.sendFailedOrderEvent(eventDto);
                 acknowledgment.acknowledge();
+                return;
             }
-
-            processPayment(eventDto);
+            processPayment(eventDto, orderState);
             // manual commit
             acknowledgment.acknowledge();
         } catch (Exception ex) {
@@ -47,9 +50,9 @@ public class ConsumerService {
         }
     }
 
-    private void processPayment(OrderEventDto eventDto) {
-        // payment completed, send event to processed topic
-        eventDto.setState(OrderState.COMPLETED.toString());
+    private void processPayment(OrderEventDto eventDto, OrderState orderState) {
+        // payment processed or cancelled, send event to processed topic
+        eventDto.setState(orderState.toString());
         producerService.sendProcessedOrderEvent(eventDto);
         log.info("Order {} was processed for user {} amount: {}",
                 eventDto.getOrderNumber(),
