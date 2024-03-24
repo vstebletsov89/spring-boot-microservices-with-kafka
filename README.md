@@ -1,13 +1,15 @@
 # spring-boot-microservices-with-kafka
 TODO:
 
-!!!add zipkin + sleuth for tracing services <--
-
 !!!order-service
    !add tests for kafka <--
 
 !!!payment-service <--
    !add tests for kafka
+
+!!!update github repo with tags and description
+!!!diagrams + screenshots
+!!!prepare presentation
 
 !!!add postgresql - check postgresql driver in pom???
 <dependency>
@@ -15,8 +17,4 @@ TODO:
 <artifactId>postgresql</artifactId>
 <scope>runtime</scope>
 </dependency>
-
-!!!update github repo with tags and description
-!!!diagrams + screenshots
-!!!prepare presentation
 
