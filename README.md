@@ -1,9 +1,6 @@
 # spring-boot-microservices-with-kafka
 TODO:
 
-!!!order-service
-   !add tests for kafka <--
-
 !!!payment-service <--
    !add tests for kafka
 
