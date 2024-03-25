@@ -12,16 +12,15 @@ import java.util.concurrent.CountDownLatch;
 @Slf4j
 @Getter
 @Component
-public class TestConsumer {
+public class TestConsumerFailedOrders {
 
     private CountDownLatch latch = new CountDownLatch(1);
 
     private OrderEventDto consumedEvent;
 
-    @KafkaListener(topics = "${application.kafka.topic}")
+    @KafkaListener(topics = "${application.kafka.output-dlq-topic}")
     public void receive(ConsumerRecord<String, OrderEventDto> consumerRecord) {
         consumedEvent = consumerRecord.value();
         latch.countDown();
     }
-
 }

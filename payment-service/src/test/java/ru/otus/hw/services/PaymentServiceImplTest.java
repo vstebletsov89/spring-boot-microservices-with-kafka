@@ -1,132 +1,69 @@
 package ru.otus.hw.services;
 
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import ru.otus.hw.dto.OrderEventDto;
+import ru.otus.hw.dto.OrderState;
+import ru.otus.hw.models.Payment;
+import ru.otus.hw.repositories.PaymentRepository;
+
+import java.math.BigDecimal;
+import java.util.Optional;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @DisplayName("Проверка работы сервиса оплаты")
 @SpringBootTest(classes = {PaymentServiceImpl.class})
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class PaymentServiceImplTest {
 
-      //TODO: add kafka tests
+    @Autowired
+    private PaymentService paymentService;
 
-//    private static List<Book> expectedBooks = new ArrayList<>();
-//
-//    private static List<BookDto> expectedBooksDto = new ArrayList<>();
-//
-//    @MockBean
-//    private AuthorRepository authorRepository;
-//
-//    @MockBean
-//    private GenreRepository genreRepository;
-//
-//    @MockBean
-//    private OrderRepository bookRepository;
-//
-//    @Autowired
-//    private BookService bookService;
-//
-//    @Autowired
-//    private BookMapper bookMapper;
-//
-//    @BeforeAll
-//    void setExpectedBooks() {
-//        expectedBooks = List.of(
-//                new Book(1L, "TestBook1",
-//                        new Author(1L, "TestAuthor1"),
-//                        new Genre(1L, "TestGenre1")),
-//                new Book(2L, "TestBook2",
-//                        new Author(2L, "TestAuthor2"),
-//                        new Genre(2L, "TestGenre2")),
-//                new Book(3L, "TestBook3",
-//                        new Author(3L, "TestAuthor3"),
-//                        new Genre(3L, "TestGenre3"))
-//        );
-//
-//        expectedBooksDto =
-//                expectedBooks.stream()
-//                        .map(bookMapper::toDto)
-//                        .toList();
-//    }
-//
-//    @DisplayName("должен загружать список всех книг")
-//    @Test
-//    void shouldReturnCorrectBooksList() {
-//        doReturn(expectedBooks).when(bookRepository).findAll();
-//        var actualBooks = bookService.findAll();
-//
-//        assertEquals(3, actualBooks.size());
-//        actualBooks.forEach(System.out::println);
-//        assertEquals(expectedBooksDto, actualBooks);
-//    }
-//
-//    @DisplayName("должен загружать книгу по id")
-//    @Test
-//    void shouldReturnCorrectBookById() {
-//        long bookId = 2L;
-//        int bookPos = 1;
-//        doReturn(Optional.of(expectedBooks.get(bookPos))).when(bookRepository).findById(bookId);
-//        var actualBook = bookService.findById(bookId);
-//
-//        assertThat(actualBook)
-//                .usingRecursiveComparison()
-//                .isEqualTo(expectedBooksDto.get(bookPos));
-//    }
-//
-//    @DisplayName("должен выбрасывать исключение для неверного id")
-//    @Test
-//    void shouldReturnExceptionForInvalidId() {
-//        doReturn(Optional.empty()).when(bookRepository).findById(99L);
-//        var exception = assertThrows(NotFoundException.class,
-//                () -> bookService.findById(99L));
-//
-//        assertEquals("Book with id 99 not found", exception.getMessage());
-//    }
-//
-//
-//    @DisplayName("должен сохранять новую книгу")
-//    @Test
-//    void shouldSaveNewBook() {
-//        Book returnedBook = expectedBooks.get(0);
-//        Book expectedBook = new Book(
-//                returnedBook.getId(),
-//                returnedBook.getTitle(),
-//                returnedBook.getAuthor(),
-//                returnedBook.getGenre()
-//        );
-//        expectedBook.setId(null);
-//        doReturn(expectedBook).when(bookRepository).save(any());
-//        doReturn(Optional.of(expectedBook.getAuthor()))
-//                .when(authorRepository)
-//                .findById(expectedBook.getAuthor().getId());
-//        doReturn(Optional.of(expectedBook.getGenre())).when(genreRepository).findById(expectedBook.getGenre().getId());
-//        var bookDto = bookService.create(new BookCreateDto(
-//                expectedBook.getTitle(),
-//                expectedBook.getAuthor().getId(),
-//                expectedBook.getGenre().getId()));
-//
-//        assertThat(bookMapper.toModel(bookDto, expectedBook.getAuthor(), expectedBook.getGenre()))
-//                .usingRecursiveComparison()
-//                .isEqualTo(expectedBook);
-//    }
-//
-//    @DisplayName("должен обновить книгу")
-//    @Test
-//    void shouldUpdateBook() {
-//        Book newBook = expectedBooks.get(1);
-//        doReturn(newBook).when(bookRepository).save(any());
-//        doReturn(Optional.of(newBook)).when(bookRepository).findById(2L);
-//        doReturn(Optional.of(newBook.getAuthor())).when(authorRepository).findById(newBook.getAuthor().getId());
-//        doReturn(Optional.of(newBook.getGenre())).when(genreRepository).findById(newBook.getGenre().getId());
-//        var bookDto = bookService.update(new BookUpdateDto(
-//                2L,
-//                newBook.getTitle(),
-//                newBook.getAuthor().getId(),
-//                newBook.getGenre().getId()));
-//
-//        assertThat(bookMapper.toModel(bookDto, newBook.getAuthor(), newBook.getGenre()))
-//                .usingRecursiveComparison()
-//                .isEqualTo(newBook);
-//    }
+    @MockBean
+    private PaymentRepository paymentRepository;
+
+    @DisplayName("должен создавать новый счет на оплату")
+    @Test
+    void shouldCreatePayment() {
+        doReturn(null)
+                .when(paymentRepository)
+                .save(any());
+        var event = new OrderEventDto(
+               1L,
+                OrderState.CREATED.toString(),
+                "order_number",
+                BigDecimal.valueOf(999.99));
+        paymentService.create(event);
+
+        verify(paymentRepository, times(1)).save(any());
+    }
+
+    @DisplayName("должен отменять оплату")
+    @Test
+    void shouldCancelPayment() {
+        doReturn(Optional.of(new Payment()))
+                .when(paymentRepository)
+                .findByOrderNumber(anyString());
+        paymentService.cancel("order_number");
+
+        verify(paymentRepository, times(1)).save(any());
+    }
+
+    @DisplayName("должен проводить оплату")
+    @Test
+    void shouldExecutePayment() {
+        doReturn(Optional.of(new Payment()))
+                .when(paymentRepository)
+                .findByOrderNumber(anyString());
+        paymentService.executePayment("order_number", 1L);
+
+        verify(paymentRepository, times(1)).save(any());
+    }
 }
