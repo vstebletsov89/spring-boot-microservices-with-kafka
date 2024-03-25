@@ -41,12 +41,10 @@ public class ConsumerService {
                 return;
             }
             processPayment(eventDto, orderState);
-            // manual commit
-            acknowledgment.acknowledge();
+            acknowledgment.acknowledge(); // manual commit
         } catch (Exception ex) {
             log.error("Error while executing payment. Try again later", ex);
-            // event will be redelivered
-            acknowledgment.nack(Duration.ofSeconds(10));
+            acknowledgment.nack(Duration.ofSeconds(10)); // event will be redelivered
         }
     }
 
