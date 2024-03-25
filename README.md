@@ -1,9 +1,6 @@
 # spring-boot-microservices-with-kafka
 TODO:
 
-!!!payment-service <--
-   !add tests for kafka
-
 !!!update github repo with tags and description
 !!!diagrams + screenshots
 !!!prepare presentation

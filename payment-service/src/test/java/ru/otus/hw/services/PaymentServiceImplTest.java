@@ -7,12 +7,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.otus.hw.dto.OrderEventDto;
 import ru.otus.hw.dto.OrderState;
+import ru.otus.hw.exceptions.NotFoundException;
 import ru.otus.hw.models.Payment;
 import ru.otus.hw.repositories.PaymentRepository;
 
 import java.math.BigDecimal;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doReturn;
@@ -56,6 +59,18 @@ class PaymentServiceImplTest {
         verify(paymentRepository, times(1)).save(any());
     }
 
+    @DisplayName("должен выбрасывать исключение для неверного заказа")
+    @Test
+    void shouldReturnExceptionForCancelInvalidOrder() {
+        doReturn(Optional.empty())
+                .when(paymentRepository)
+                .findByOrderNumber(anyString());
+        var exception = assertThrows(NotFoundException.class,
+                () -> paymentService.cancel("invalid_number"));
+
+        assertEquals("Payment with order number 'invalid_number' not found", exception.getMessage());
+   }
+
     @DisplayName("должен проводить оплату")
     @Test
     void shouldExecutePayment() {
@@ -65,5 +80,17 @@ class PaymentServiceImplTest {
         paymentService.executePayment("order_number", 1L);
 
         verify(paymentRepository, times(1)).save(any());
+    }
+
+    @DisplayName("должен выбрасывать исключение для неверного заказа")
+    @Test
+    void shouldReturnExceptionForExecutePaymentInvalidOrder() {
+        doReturn(Optional.empty())
+                .when(paymentRepository)
+                .findByOrderNumber(anyString());
+        var exception = assertThrows(NotFoundException.class,
+                () -> paymentService.executePayment("invalid_number", 1L));
+
+        assertEquals("Payment with order number 'invalid_number' not found", exception.getMessage());
     }
 }

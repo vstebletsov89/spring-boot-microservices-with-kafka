@@ -1,6 +1,5 @@
 package ru.otus.hw.kafka;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -29,7 +28,7 @@ class ProducerServiceTest {
     private TestConsumer testConsumer;
 
     @Test
-    void shouldSendOrderEventToKafka() throws InterruptedException, JsonProcessingException {
+    void shouldSendOrderEventToKafka() throws InterruptedException {
         var event = new OrderEventDto(1L,
                 OrderState.CREATED.toString(),
                 "order_number",
