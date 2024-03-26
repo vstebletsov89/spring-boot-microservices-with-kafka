@@ -3,7 +3,6 @@ package ru.otus.hw.kafka;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.TestPropertySource;
@@ -46,8 +45,7 @@ class ConsumerUsingTestContainer {
     private PaymentRepository paymentRepository;
 
     @Autowired
-    private KafkaTemplate<String, Object> kafkaTemplate;
-
+    private TestProducerOrders testProducerOrders;
 
     @DynamicPropertySource
     static void overrideProperties(DynamicPropertyRegistry registry) {
@@ -56,28 +54,57 @@ class ConsumerUsingTestContainer {
     }
 
     @Test
-    void shouldHandleOrderEvent() {
+    void shouldProcessNewOrderEvent() throws InterruptedException {
         var event = new OrderEventDto(1L,
                 OrderState.CREATED.toString(),
                 "a0ab87ac-ad94-4fbd-aeec-05091393520e",
-                BigDecimal.valueOf(99999.999));
+                BigDecimal.valueOf(99999.99));
 
-        kafkaTemplate.send("orders", String.valueOf(event.getUserId()), event);
+        Thread.sleep(5000);
+        testProducerOrders.sendOrderEvent(event);
 
         await()
-                .pollInterval(Duration.ofSeconds(3))
-                .atMost(10, SECONDS)
+                .pollInterval(Duration.ofSeconds(5))
+                .atMost(15, SECONDS)
                 .untilAsserted(() -> {
-                    //TODO: update to check payment was created
                     var newPayment =
                             paymentRepository.findByOrderNumber(event.getOrderNumber());
 
                     assertThat(newPayment).isPresent();
-                    assertEquals(1L, newPayment.get().getId());
-                    assertEquals(TransactionType.CREATED, newPayment.get().getType());
+                    assertEquals(TransactionType.PROCESSED, newPayment.get().getType());
                     assertEquals(event.getOrderNumber(), newPayment.get().getOrderNumber());
-                    assertThat(newPayment.get().getAmount())
-                            .isEqualTo(BigDecimal.valueOf(99999.999));
+                    assertEquals(event.getAmount(), newPayment.get().getAmount());
+                });
+    }
+
+    @Test
+    void shouldCancelOrder() throws InterruptedException {
+        var newOrder = new OrderEventDto(1L,
+                OrderState.CREATED.toString(),
+                "5865a38d-0ff3-4fee-9ee5-d963f6d2959e",
+                BigDecimal.valueOf(50000.99));
+
+        var cancelOrder = new OrderEventDto(1L,
+                OrderState.CANCELED.toString(),
+                "5865a38d-0ff3-4fee-9ee5-d963f6d2959e",
+                BigDecimal.valueOf(0));
+
+        Thread.sleep(5000);
+        // create order
+        testProducerOrders.sendOrderEvent(newOrder);
+        testProducerOrders.sendOrderEvent(cancelOrder);
+
+        await()
+                .pollInterval(Duration.ofSeconds(5))
+                .atMost(15, SECONDS)
+                .untilAsserted(() -> {
+                    var canceledPayment =
+                            paymentRepository.findByOrderNumber(cancelOrder.getOrderNumber());
+
+                    assertThat(canceledPayment).isPresent();
+                    assertEquals(TransactionType.REFUND, canceledPayment.get().getType());
+                    assertEquals(cancelOrder.getOrderNumber(), canceledPayment.get().getOrderNumber());
+                    assertEquals(newOrder.getAmount(), canceledPayment.get().getAmount());
                 });
     }
 }

@@ -29,8 +29,9 @@ public class PaymentServiceImpl implements PaymentService {
         var currentTime = LocalDateTime.now();
         payment.setCreatedAt(currentTime);
         payment.setUpdatedAt(currentTime);
+        payment.setAmount(orderEventDto.getAmount());
         paymentRepository.save(payment);
-        log.info("Payment created {}", payment);
+        log.info("Payment created for {}", payment.getOrderNumber());
     }
 
     @Transactional
@@ -43,7 +44,7 @@ public class PaymentServiceImpl implements PaymentService {
         payment.setType(TransactionType.REFUND);
         payment.setUpdatedAt(LocalDateTime.now());
         paymentRepository.save(payment);
-        log.info("Payment canceled {}", payment);
+        log.info("Payment canceled {}", payment.getOrderNumber());
     }
 
     @Transactional
@@ -57,6 +58,6 @@ public class PaymentServiceImpl implements PaymentService {
         payment.setType(TransactionType.PROCESSED);
         payment.setUpdatedAt(LocalDateTime.now());
         paymentRepository.save(payment);
-        log.info("Payment {} successfully executed", payment);
+        log.info("Payment for {} successfully executed", payment.getOrderNumber());
     }
 }

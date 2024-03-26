@@ -38,7 +38,7 @@ public class Payment {
     @Enumerated(EnumType.STRING)
     private TransactionType type;
 
-    @Column(name = "amount", nullable = false)
+    @Column(name = "amount", nullable = false, scale = 2, precision = 10)
     @DecimalMin(value = "0.00", message = "Amount must be non negative number")
     private BigDecimal amount;
 
