@@ -1,0 +1,11 @@
+${AnsiColor.BRIGHT_GREEN} _______  _______  _______ _________ _        _______
+${AnsiColor.BRIGHT_GREEN}(  ____ \(  ____ )(  ____ )\__   __/( (    /|(  ____ \
+${AnsiColor.BRIGHT_GREEN}| (    \/| (    )|| (    )|   ) (   |  \  ( || (    \/
+${AnsiColor.BRIGHT_GREEN}| (_____ | (____)|| (____)|   | |   |   \ | || |
+${AnsiColor.BRIGHT_GREEN}(_____  )|  _____)|     __)   | |   | (\ \) || | ____
+${AnsiColor.BRIGHT_GREEN}      ) || (      | (\ (      | |   | | \   || | \_  )
+${AnsiColor.BRIGHT_GREEN}/\____) || )      | ) \ \_____) (___| )  \  || (___) |
+${AnsiColor.BRIGHT_GREEN}\_______)|/       |/   \__/\_______/|/    )_)(_______)
+${AnsiColor.MAGENTA}${spring.application.name}
+${AnsiColor.CYAN}Powered by Spring Boot ${spring-boot.version}
+${AnsiColor.DEFAULT}

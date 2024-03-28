@@ -1,0 +1,45 @@
+application:
+  kafka:
+    input-topic: "orders"
+    output-topic: "orders_processed"
+    output-dlq-topic: "orders_failed"
+
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb
+  application:
+    name: "Test env for payment-service"
+  jpa:
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+  kafka:
+    consumer:
+      auto-offset-reset: earliest
+      group-id: payments_group
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: "ru.otus.hw.dto"
+
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "metrics,health,logfile,flyway"
+  health:
+    defaults:
+      enabled: true
+
+logging:
+  file:
+    name: ./test_logs/library.log
